@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulse — Student Productivity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,500;1,8..60,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <p class="brand-name">Pulse</p>
+          <p class="brand-sub">Study OS</p>
+        </div>
+      </div>
+
+      <nav class="nav" aria-label="Primary">
+        <button class="nav-btn is-active" data-view="dashboard" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-btn" data-view="tasks" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
+          Tasks
+        </button>
+        <button class="nav-btn" data-view="analytics" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M7 16V9m5 7V5m5 14v-6"/></svg>
+          Analytics
+        </button>
+      </nav>
+
+      <div class="sidebar-card">
+        <p class="sidebar-card-label">Focus streak</p>
+        <p class="sidebar-card-value" id="streakValue">0 days</p>
+        <p class="sidebar-card-hint">Complete a task today to keep it going.</p>
+      </div>
+    </aside>
+
+    <div class="backdrop" id="backdrop" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+        <div>
+          <p class="date" id="todayDate"></p>
+          <h1 class="welcome" id="welcomeMessage">Welcome back</h1>
+        </div>
+        <div class="topbar-meta">
+          <span class="chip" id="openCount">0 open</span>
+        </div>
+      </header>
+
+      <section class="view is-active" id="view-dashboard" data-view-panel="dashboard">
+        <div class="stat-grid">
+          <article class="stat-card">
+            <p class="stat-label">Total tasks</p>
+            <p class="stat-value" id="statTotal">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Completed</p>
+            <p class="stat-value accent" id="statDone">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">High priority</p>
+            <p class="stat-value high" id="statHigh">0</p>
+          </article>
+        </div>
+
+        <article class="panel progress-panel">
+          <div class="panel-head">
+            <h2>Today’s progress</h2>
+            <span class="percent" id="progressPercent">0%</span>
+          </div>
+          <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressBar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <p class="muted" id="progressCopy">Add a task to start tracking.</p>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Up next</h2>
+            <button class="text-btn" data-view="tasks" type="button">View all</button>
+          </div>
+          <ul class="task-list" id="dashboardTasks"></ul>
+        </article>
+      </section>
+
+      <section class="view" id="view-tasks" data-view-panel="tasks" hidden>
+        <article class="panel">
+          <h2>Add a task</h2>
+          <form class="task-form" id="taskForm">
+            <label class="sr-only" for="taskTitle">Task title</label>
+            <input id="taskTitle" name="title" type="text" placeholder="Read chapter 4, submit lab notes…" required maxlength="120" />
+            <label class="sr-only" for="taskPriority">Priority</label>
+            <select id="taskPriority" name="priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+            <button class="primary-btn" type="submit">Add task</button>
+          </form>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head">
+            <h2>Your tasks</h2>
+            <div class="filters">
+              <button class="filter-btn is-active" data-filter="all" type="button">All</button>
+              <button class="filter-btn" data-filter="open" type="button">Open</button>
+              <button class="filter-btn" data-filter="done" type="button">Done</button>
+            </div>
+          </div>
+          <ul class="task-list" id="taskList"></ul>
+        </article>
+      </section>
+
+      <section class="view" id="view-analytics" data-view-panel="analytics" hidden>
+        <article class="panel">
+          <h2>Completion</h2>
+          <div class="donut-wrap">
+            <div class="donut" id="donut">
+              <span id="donutLabel">0%</span>
+            </div>
+            <ul class="legend">
+              <li><span class="swatch done"></span> Completed <strong id="legendDone">0</strong></li>
+              <li><span class="swatch open"></span> Remaining <strong id="legendOpen">0</strong></li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h2>By priority</h2>
+          <div class="bars">
+            <div class="bar-row">
+              <span>High</span>
+              <div class="bar"><div class="bar-fill high" id="barHigh"></div></div>
+              <strong id="barHighLabel">0</strong>
+            </div>
+            <div class="bar-row">
+              <span>Medium</span>
+              <div class="bar"><div class="bar-fill medium" id="barMedium"></div></div>
+              <strong id="barMediumLabel">0</strong>
+            </div>
+            <div class="bar-row">
+              <span>Low</span>
+              <div class="bar"><div class="bar-fill low" id="barLow"></div></div>
+              <strong id="barLowLabel">0</strong>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
